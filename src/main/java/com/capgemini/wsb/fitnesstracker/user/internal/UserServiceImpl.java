@@ -42,6 +42,17 @@ class UserServiceImpl implements UserService, UserProvider {
     }
 
     @Override
+    public Optional<User> getUserDetails(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()) {
+            log.info("User with id:{} was found.", userId);
+        } else {
+            log.info("User with id:{} could not be found.", userId);
+        }
+        return user;
+    }
+
+    @Override
     public Optional<User> getUser(final Long userId) {
         return userRepository.findById(userId);
     }

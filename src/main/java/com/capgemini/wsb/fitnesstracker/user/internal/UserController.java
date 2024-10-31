@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -34,6 +35,12 @@ class UserController {
                 .map(userMapper::toSimpleDto)
                 .toList();
     }
+
+    @GetMapping("/{userId}")
+    public Optional<UserDto> getUserDetails(@PathVariable long userId){
+        return userService.getUserDetails(userId).stream().map(userMapper::toDto).findAny();
+    }
+
 
     @PostMapping
     public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
