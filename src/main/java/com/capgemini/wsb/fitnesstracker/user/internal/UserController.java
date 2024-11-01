@@ -36,20 +36,18 @@ class UserController {
                 .toList();
     }
 
-    @GetMapping("/{userId}")
-    public Optional<UserDto> getUserDetails(@PathVariable long userId){
-        return userService.getUserDetails(userId).stream().map(userMapper::toDto).findAny();
+    @GetMapping("/{id}")
+    public Optional<UserDto> getUserDetails(@PathVariable long id){
+        return userService.getUserDetails(id).stream().map(userMapper::toDto).findAny();
     }
 
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
 
-        // Demonstracja how to use @RequestBody
         System.out.println("User with e-mail: " + userDto.email() + "passed to the request");
-
-        // TODO: saveUser with Service and return User
-        return null;
+        User tempUser = new User(userDto.firstName(), userDto.lastName(), userDto.birthdate(), userDto.email());
+        return userService.createUser(tempUser);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -58,4 +56,8 @@ class UserController {
         userService.deleteUser(userId);
     }
 
+    //@GetMapping("/{id}")
+    //public Optional<UserDto> getUserDetails(@PathVariable long id){
+    //    return userService.getUserDetails(id).stream().map(userMapper::toDto).findAny();
+    //}
 }
