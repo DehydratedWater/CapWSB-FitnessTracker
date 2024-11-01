@@ -67,4 +67,12 @@ class UserServiceImpl implements UserService, UserProvider {
         return userRepository.findAll();
     }
 
+    @Override
+    public User updateUser(final User user) {
+        log.info("Updating User {}", user);
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User is not existing in DB, update is not permitted!");
+        }
+        return userRepository.save(user);
+    }
 }

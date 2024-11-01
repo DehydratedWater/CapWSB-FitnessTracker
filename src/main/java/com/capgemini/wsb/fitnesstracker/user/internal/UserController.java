@@ -1,6 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserEmailDto;
 import com.capgemini.wsb.fitnesstracker.user.api.UserSimpleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -8,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +60,29 @@ class UserController {
         userService.deleteUser(userId);
     }
 
-    //@GetMapping("/{id}")
-    //public Optional<UserDto> getUserDetails(@PathVariable long id){
-    //    return userService.getUserDetails(id).stream().map(userMapper::toDto).findAny();
-    //}
+    @GetMapping("/email/{email}")
+    public Optional<UserEmailDto> getUserByEmail(@PathVariable String email){
+        //email = email.toLowerCase();
+        return userService.getUserByEmail(email).stream().map(userMapper::toEmailDto).findAny();
+    }
+
+    @GetMapping("/older/{time}")
+    public List<UserDto> getUserOlderThan(@PathVariable long time){
+        List<User> tempListOfUsers = userService.findAllUsers();
+
+        long years = 0;
+        for (int i = 0; i < tempListOfUsers.size(); i++) {
+             years = ChronoUnit.YEARS.between(tempListOfUsers.get(i).getBirthdate(), LocalDate.now());
+            if(years <= time){
+                tempListOfUsers.remove(i);
+            }
+        }
+        return tempListOfUsers.stream().map(userMapper::toDto).toList();
+    }
+
+    @PatchMapping
+    public User updateUser(@RequestBody UserDto userDto) throws InterruptedException {
+        User tempUser = new User(userDto.firstName(), userDto.lastName(), userDto.birthdate(), userDto.email());
+        return userService.updateUser(tempUser);
+    }
 }
