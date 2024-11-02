@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,12 +70,15 @@ class UserController {
     @GetMapping("/older/{time}")
     public List<UserDto> getUserOlderThan(@PathVariable long time){
         List<User> tempListOfUsers = userService.findAllUsers();
+        Iterator<User> iterator = tempListOfUsers.iterator();
 
+        System.out.println("Im getting users older than " + String.valueOf(time));
         long years = 0;
-        for (int i = 0; i < tempListOfUsers.size(); i++) {
-             years = ChronoUnit.YEARS.between(tempListOfUsers.get(i).getBirthdate(), LocalDate.now());
+        while (iterator.hasNext()){
+            years = ChronoUnit.YEARS.between(iterator.next().getBirthdate(), LocalDate.now());
+            //System.out.println("Birthdate" + iterator.next().getBirthdate().toString() + "Now" + LocalDate.now().toString());
             if(years <= time){
-                tempListOfUsers.remove(i);
+                iterator.remove();
             }
         }
         return tempListOfUsers.stream().map(userMapper::toDto).toList();
