@@ -182,6 +182,60 @@
 			"response": []
 		},
 		{
+			"name": "getUserByEmailCaps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/users/email?email=EMMA.JOHNSON@DOMAIN.COM",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"users",
+						"email"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "EMMA.JOHNSON@DOMAIN.COM"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserByEmailPart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/users/email?email=Emma",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"users",
+						"email"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "Emma"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "getUserOlderThan",
 			"request": {
 				"method": "GET",

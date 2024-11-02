@@ -18,8 +18,9 @@ interface UserRepository extends JpaRepository<User, Long> {
      * @return {@link Optional} containing found user or {@link Optional#empty()} if none matched
      */
     default Optional<User> findByEmail(String email) {
+        String lowerEmail = email.toLowerCase();
         return findAll().stream()
-                        .filter(user -> Objects.equals(user.getEmail().toLowerCase(), email))
+                        .filter(user -> user.getEmail().toLowerCase().contains(lowerEmail))
                         .findFirst();
     }
 

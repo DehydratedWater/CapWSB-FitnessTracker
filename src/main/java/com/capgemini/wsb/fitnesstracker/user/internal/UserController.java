@@ -63,7 +63,6 @@ class UserController {
 
     @GetMapping("/email")
     public List<UserEmailDto> getUserByEmail(@RequestParam String email) {
-        email = email.toLowerCase();
         return userService.getUserByEmail(email).stream().map(userMapper::toEmailDto).toList();
     }
 
