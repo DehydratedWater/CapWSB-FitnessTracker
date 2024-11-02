@@ -31,8 +31,20 @@ public interface UserProvider {
      */
     List<User> findAllUsers();
 
+    /**
+     * Retrieves detailed information about a user based on their ID.
+     *
+     * @param userId id of the user to retrieve detailed information for
+     * @return An {@link Optional} containing detailed {@link User} information
+     */
     Optional<User> getUserDetails(Long userId);
 
+    /**
+     * Retrieves a list of users who are older than a specified date.
+     *
+     * @param time The date to compare against for filtering users
+     * @return A {@link List} of {@link User} entities whose birthdate is before the specified date
+     */
     List<User> findUsersOlderThenDate(LocalDate time);
 
 }

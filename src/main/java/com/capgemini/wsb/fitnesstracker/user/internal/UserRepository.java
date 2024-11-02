@@ -24,6 +24,12 @@ interface UserRepository extends JpaRepository<User, Long> {
                         .findFirst();
     }
 
+    /**
+     * Finds all users who were born before a specified date.
+     *
+     * @param time the date to compare each user's birthdate against
+     * @return a {@link List} of {@link User} entities who are older than the specified date
+     */
     default List<User> findUsersOlderThenDate(LocalDate time) {
         return findAll().stream()
                 .filter(user -> time.isAfter(user.getBirthdate()))

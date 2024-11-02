@@ -8,14 +8,27 @@ import org.springframework.stereotype.Component;
 @Component
 class UserMapper {
 
+    /**
+     * Converts a {@link User} entity to a {@link UserDto}.
+     *
+     * @param user the {@link User} entity to be converted
+     * @return a {@link UserDto} representation of the user
+     */
     UserDto toDto(User user) {
         return new UserDto(user.getId(),
-                           user.getFirstName(),
-                           user.getLastName(),
-                           user.getBirthdate(),
-                           user.getEmail());
+                user.getFirstName(),
+                user.getLastName(),
+                user.getBirthdate(),
+                user.getEmail());
     }
 
+    /**
+     * Converts a {@link User} entity to a {@link UserSimpleDto}.
+     * The {@link UserSimpleDto} contains only the user's basic information: ID, first name, and last name.
+     *
+     * @param user the {@link User} entity to be converted
+     * @return a {@link UserSimpleDto} representation of the user
+     */
     UserSimpleDto toSimpleDto(User user) {
         return new UserSimpleDto(
                 user.getId(),
@@ -24,6 +37,13 @@ class UserMapper {
         );
     }
 
+    /**
+     * Converts a {@link User} entity to a {@link UserEmailDto}.
+     * The {@link UserEmailDto} contains only the user's ID and email.
+     *
+     * @param user the {@link User} entity to be converted
+     * @return a {@link UserEmailDto} representation of the user
+     */
     UserEmailDto toEmailDto(User user) {
         return new UserEmailDto(
                 user.getId(),
@@ -33,10 +53,10 @@ class UserMapper {
 
     User toEntity(UserDto userDto) {
         return new User(
-                        userDto.firstName(),
-                        userDto.lastName(),
-                        userDto.birthdate(),
-                        userDto.email());
+                userDto.firstName(),
+                userDto.lastName(),
+                userDto.birthdate(),
+                userDto.email());
     }
 
 }
