@@ -1,13 +1,45 @@
 {
 	"info": {
-		"_postman_id": "31f691ad-2a6d-4f6b-97a5-bd5b934676a7",
+		"_postman_id": "0decd7b6-2ce6-46b5-901c-91b0597cbedc",
 		"name": "CapWSB-FitnessTrackerTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "39396422"
+		"_exporter_id": "5025842"
 	},
 	"item": [
 		{
-			"name": "GETusers",
+			"name": "GETUsersSimple",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GETUsers",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -73,7 +105,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"Id\": 11,\r\n        \"firstName\": \"Emma\",\r\n        \"lastName\": \"Scott\",\r\n        \"birthdate\": \"2006-11-02\",\r\n        \"email\": \"Emma.Scott@domain.com\"\r\n    }",
+					"raw": "{\r\n        \"firstName\": \"Emma\",\r\n        \"lastName\": \"Scott\",\r\n        \"birthdate\": \"2006-11-02\",\r\n        \"email\": \"Emma.Scott@domain.com\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -128,7 +160,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/v1/users/email/:email",
+					"raw": "http://localhost:8080/v1/users/email?email=Emma.Johnson@domain.com",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -137,13 +169,12 @@
 					"path": [
 						"v1",
 						"users",
-						"email",
-						":email"
+						"email"
 					],
-					"variable": [
+					"query": [
 						{
 							"key": "email",
-							"value": "Oliver.Swift@domain.com"
+							"value": "Emma.Johnson@domain.com"
 						}
 					]
 				}
@@ -171,7 +202,7 @@
 					"variable": [
 						{
 							"key": "time",
-							"value": "25"
+							"value": "1975-01-12"
 						}
 					]
 				}
@@ -180,15 +211,12 @@
 		},
 		{
 			"name": "updateUser",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"firstName\": \"Oliver\"\r\n    }",
+					"raw": "{\r\n    \"firstName\": \"Emmalia\",\r\n    \"lastName\": \"Johnson\",\r\n    \"birthdate\": \"1996-11-02\",\r\n    \"email\": \"Emma.Johnson@domain.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
