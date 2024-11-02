@@ -84,9 +84,9 @@ class UserController {
         return tempListOfUsers.stream().map(userMapper::toDto).toList();
     }
 
-    @PatchMapping
-    public User updateUser(@RequestBody UserDto userDto) throws InterruptedException {
-        User tempUser = new User(userDto.firstName(), userDto.lastName(), userDto.birthdate(), userDto.email());
+    @PutMapping("/{userId}")
+    public User updateUser(@PathVariable long userId, @RequestBody UserDto userDto) throws InterruptedException {
+        User tempUser = new User(userId, userDto.firstName(), userDto.lastName(), userDto.birthdate(), userDto.email());
         return userService.updateUser(tempUser);
     }
 }
