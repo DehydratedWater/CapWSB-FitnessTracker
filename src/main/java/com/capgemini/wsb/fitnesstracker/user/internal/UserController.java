@@ -61,10 +61,10 @@ class UserController {
         userService.deleteUser(userId);
     }
 
-    @GetMapping("/email/{email}")
-    public Optional<UserEmailDto> getUserByEmail(@PathVariable String email){
-        //email = email.toLowerCase();
-        return userService.getUserByEmail(email).stream().map(userMapper::toEmailDto).findAny();
+    @GetMapping("/email")
+    public List<UserEmailDto> getUserByEmail(@RequestParam String email) {
+        email = email.toLowerCase();
+        return userService.getUserByEmail(email).stream().map(userMapper::toEmailDto).toList();
     }
 
     @GetMapping("/older/{time}")
