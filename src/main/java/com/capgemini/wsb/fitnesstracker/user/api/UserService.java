@@ -1,5 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.api;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,8 +12,6 @@ public interface UserService {
 
     User createUser(User user);
     void deleteUser(long userId);
-    Optional<User> getUserDetails(Long userId);
-    Optional<User> getUserByEmail(String email);
 
     User updateUser(User user);
 }
