@@ -7,7 +7,7 @@ import com.capgemini.wsb.fitnesstracker.user.api.UserSimpleDto;
 import org.springframework.stereotype.Component;
 
 @Component
-class UserMapper {
+public class UserMapper {
 
     /**
      * Converts a {@link User} entity to a {@link UserDto}.
@@ -15,7 +15,7 @@ class UserMapper {
      * @param user the {@link User} entity to be converted
      * @return a {@link UserDto} representation of the user
      */
-    UserDto toDto(User user) {
+    public UserDto toDto(User user) {
         return new UserDto(user.getId(),
                 user.getFirstName(),
                 user.getLastName(),

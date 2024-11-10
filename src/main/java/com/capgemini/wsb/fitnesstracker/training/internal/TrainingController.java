@@ -1,10 +1,12 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
+import com.capgemini.wsb.fitnesstracker.training.api.Training;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
+import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +23,22 @@ public class TrainingController {
                 .stream()
                 .map(trainingMapper::toDto)
                 .toList();
+    }
+
+    /**
+     * Adds a new training.
+     *
+     * @param trainingDto the {@link TrainingDto} containing information for the training session to create
+     * @return the created {@link TrainingDto}
+     * @throws InterruptedException if an interruption occurs during processing
+     */
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public TrainingDto addTraining(@RequestBody TrainingDto trainingDto) throws InterruptedException {
+        System.out.println("Training for user with ID: " + trainingDto.user().getId() + " passed to the request");
+
+
+
+        return trainingService.createTraining(tempTraining);
     }
 }
