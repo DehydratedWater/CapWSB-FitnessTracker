@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
 @Component
 public class TrainingMapper {
 
@@ -36,15 +35,4 @@ public class TrainingMapper {
         );
     }
 
-    public Training toEntity(TrainingDto trainingDto) {
-        return new TrainingDto(
-                trainingDto.getId(),
-                userMapper.toDto(trainingDto.getUser()),
-                trainingDto.getStartTime(),
-                trainingDto.getEndTime(),
-                trainingDto.getActivityType(),
-                trainingDto.getDistance(),
-                trainingDto.getAverageSpeed()
-        );
-    }
 }

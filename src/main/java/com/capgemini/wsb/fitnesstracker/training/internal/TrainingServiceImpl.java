@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,4 +51,26 @@ public class TrainingServiceImpl implements TrainingProvider {
 
         return trainings;
     }
+
+    @Override
+    public List<Training> getFinishedTrainingsAfterTime(LocalDate time) {
+        //log.info("Wszedlem do getFinished");
+
+        List<Training> trainings = trainingRepository.findAll();
+        //List<Training> emptyTrainingList = new ArrayList<>();
+        Date timeTempDateType = Date.from(time.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        Iterator<Training> iterator = trainings.iterator();
+        while (iterator.hasNext()){
+            Training tempTraining = iterator.next();
+            if(tempTraining.getEndTime().compareTo(timeTempDateType) <= 0){
+                iterator.remove();
+                //log.info("I removed {}", tempTraining.getUser().getId());
+            }
+        }
+        return trainings;
+    }
+
+
+
 }
