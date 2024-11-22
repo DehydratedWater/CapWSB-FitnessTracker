@@ -1,7 +1,9 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
 import com.capgemini.wsb.fitnesstracker.training.api.Training;
+import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
+import com.capgemini.wsb.fitnesstracker.training.api.TrainingService;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TrainingServiceImpl implements TrainingProvider {
+public class TrainingServiceImpl implements TrainingProvider, TrainingService {
     private final TrainingRepository trainingRepository;
 
     @Override
@@ -90,4 +92,31 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainings;
     }
 
+    @Override
+    public Training createTraining(TrainingDto trainingsDto){
+
+        User tempUser = new User(trainingsDto.user().getId(), trainingsDto.user().getFirstName(), trainingsDto.user().getLastName(), trainingsDto.user().getBirthdate(), trainingsDto.user().getEmail());
+        Training tempTraining = new Training(tempUser, trainingsDto.startTime(), trainingsDto.endTime(), trainingsDto.activityType(), trainingsDto.distance(), trainingsDto.averageSpeed());
+        log.info("Creating Trainings{}", tempTraining);
+        List<Training> tempTrainings = trainingRepository.findAll();
+        LinkedHashSet<Integer> trainingsIds = new LinkedHashSet<>();
+        LinkedHashSet<Integer> trainingsUsersIds = new LinkedHashSet<>();
+
+        for (Training t : tempTrainings) {
+            //System.out.println("Element: " + t);
+            trainingsIds.add(t.getId().intValue());
+            trainingsUsersIds.add(t.getUser().getId().intValue());
+        }
+
+        if (trainingsIds.contains(trainingsDto.id().intValue())){
+            //log.info("Training is already in DB {}", trainingsDto.id());
+            throw new IllegalArgumentException("Training has already DB ID, action is not permitted!");
+        }
+        if (!trainingsUsersIds.contains(trainingsDto.user().getId().intValue())){
+            //log.info("User {} is not existing in DB", trainingsDto.user().Id());
+            throw new IllegalArgumentException("User is not existing in DB, action is not permitted!");
+        }
+
+        return trainingRepository.save(tempTraining);
+    }
 }

@@ -2,8 +2,10 @@ package com.capgemini.wsb.fitnesstracker.training.internal;
 
 import com.capgemini.wsb.fitnesstracker.training.api.Training;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
+import com.capgemini.wsb.fitnesstracker.user.api.User;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -50,5 +52,13 @@ public class TrainingController {
                 .stream()
                 .map(trainingMapper::toDto)
                 .toList();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public Training addTraining(@RequestBody TrainingDto trainingDto) throws InterruptedException {
+        System.out.println("Training " + trainingDto.toString());
+        //TrainingDto tempTrainingsDto = new TrainingDto(trainingDto.id(), trainingDto.user(), trainingDto.startTime(), trainingDto.endTime(), trainingDto.activityType(), trainingDto.distance(), trainingDto.averageSpeed());
+        return trainingService.createTraining(trainingDto);
     }
 }
