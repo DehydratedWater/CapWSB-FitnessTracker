@@ -22,4 +22,5 @@ public interface TrainingProvider {
      * @return An {@link Optional} containing the all users,
      */
     List<Training> findAllTrainings();
+    List<Training> getTrainingsForUser(Long userId);
 }
