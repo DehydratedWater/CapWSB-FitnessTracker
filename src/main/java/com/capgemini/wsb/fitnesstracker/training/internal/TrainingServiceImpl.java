@@ -71,6 +71,23 @@ public class TrainingServiceImpl implements TrainingProvider {
         return trainings;
     }
 
+    @Override
+    public List<Training> getTrainingByActivityType(String activityType){
+        activityType = activityType.toLowerCase();
 
+        //log.info("Pobralem {}", activityType);
+        List<Training> trainings = trainingRepository.findAll();
+
+        Iterator<Training> iterator = trainings.iterator();
+        while (iterator.hasNext()){
+            Training tempTraining = iterator.next();
+            //log.info("{}",tempTraining.getActivityType().toString().toLowerCase());
+            if(!tempTraining.getActivityType().toString().toLowerCase().equals(activityType)){
+                iterator.remove();
+                //log.info("I removed {}", tempTraining.getUser().getId());
+            }
+        }
+        return trainings;
+    }
 
 }

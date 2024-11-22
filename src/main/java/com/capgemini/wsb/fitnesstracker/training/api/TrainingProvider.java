@@ -25,4 +25,5 @@ public interface TrainingProvider {
     List<Training> findAllTrainings();
     List<Training> getTrainingsForUser(Long userId);
     List<Training> getFinishedTrainingsAfterTime(LocalDate time);
+    List<Training> getTrainingByActivityType(String activityType);
 }
