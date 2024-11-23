@@ -1,16 +1,15 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
 import com.capgemini.wsb.fitnesstracker.training.api.Training;
+import com.capgemini.wsb.fitnesstracker.training.api.TrainingReqBodyDto;
 import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
-import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/trainings")
@@ -37,7 +36,6 @@ public class TrainingController {
 
     @GetMapping("/finished/{afterTime}")
     public List<TrainingDto> getAllFinishedTrainingsAfterTime(@PathVariable String afterTime) {
-
         LocalDate parsedTime = LocalDate.parse(afterTime);
         return trainingService.getFinishedTrainingsAfterTime(parsedTime)
                 .stream()
@@ -56,9 +54,13 @@ public class TrainingController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Training addTraining(@RequestBody TrainingDto trainingDto) throws InterruptedException {
-        System.out.println("Training " + trainingDto.toString());
-        //TrainingDto tempTrainingsDto = new TrainingDto(trainingDto.id(), trainingDto.user(), trainingDto.startTime(), trainingDto.endTime(), trainingDto.activityType(), trainingDto.distance(), trainingDto.averageSpeed());
+    public Training addTraining(@RequestBody TrainingReqBodyDto trainingDto) throws InterruptedException {
+        //System.out.println("Training " + trainingDto.toString());
         return trainingService.createTraining(trainingDto);
+    }
+
+    @PutMapping("/{trainingId}")
+    public Training updateTraining(@PathVariable long trainingId, @RequestBody TrainingReqBodyDto trainingDto) throws InterruptedException {
+        return trainingService.updateTraining(trainingId, trainingDto);
     }
 }

@@ -1,16 +1,14 @@
 package com.capgemini.wsb.fitnesstracker.training.internal;
 
-import com.capgemini.wsb.fitnesstracker.training.api.Training;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingDto;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
-import com.capgemini.wsb.fitnesstracker.training.api.TrainingService;
+import com.capgemini.wsb.fitnesstracker.training.api.*;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -20,6 +18,12 @@ import java.util.*;
 @Slf4j
 public class TrainingServiceImpl implements TrainingProvider, TrainingService {
     private final TrainingRepository trainingRepository;
+    private UserProvider userProvider;
+
+    @Autowired
+    public void TrainingServiceImpl(UserProvider userProvider){
+        this.userProvider = userProvider;
+    }
 
     @Override
     public Optional<User> getTraining(final Long trainingId) {
@@ -56,10 +60,8 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
 
     @Override
     public List<Training> getFinishedTrainingsAfterTime(LocalDate time) {
-        //log.info("Wszedlem do getFinished");
 
         List<Training> trainings = trainingRepository.findAll();
-        //List<Training> emptyTrainingList = new ArrayList<>();
         Date timeTempDateType = Date.from(time.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         Iterator<Training> iterator = trainings.iterator();
@@ -93,30 +95,31 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
     }
 
     @Override
-    public Training createTraining(TrainingDto trainingsDto){
+    public Training createTraining(TrainingReqBodyDto trainingsDto){
+        Long userId = trainingsDto.userId();
+        Optional<User> optionalUser = userProvider.getUser(userId);
+        User tempUser = optionalUser.orElseThrow(() -> new IllegalArgumentException("User is not existing in DB, action is not permitted!"));
 
-        User tempUser = new User(trainingsDto.user().getId(), trainingsDto.user().getFirstName(), trainingsDto.user().getLastName(), trainingsDto.user().getBirthdate(), trainingsDto.user().getEmail());
         Training tempTraining = new Training(tempUser, trainingsDto.startTime(), trainingsDto.endTime(), trainingsDto.activityType(), trainingsDto.distance(), trainingsDto.averageSpeed());
-        log.info("Creating Trainings{}", tempTraining);
-        List<Training> tempTrainings = trainingRepository.findAll();
-        LinkedHashSet<Integer> trainingsIds = new LinkedHashSet<>();
-        LinkedHashSet<Integer> trainingsUsersIds = new LinkedHashSet<>();
-
-        for (Training t : tempTrainings) {
-            //System.out.println("Element: " + t);
-            trainingsIds.add(t.getId().intValue());
-            trainingsUsersIds.add(t.getUser().getId().intValue());
-        }
-
-        if (trainingsIds.contains(trainingsDto.id().intValue())){
-            //log.info("Training is already in DB {}", trainingsDto.id());
-            throw new IllegalArgumentException("Training has already DB ID, action is not permitted!");
-        }
-        if (!trainingsUsersIds.contains(trainingsDto.user().getId().intValue())){
-            //log.info("User {} is not existing in DB", trainingsDto.user().Id());
-            throw new IllegalArgumentException("User is not existing in DB, action is not permitted!");
-        }
+        //log.info("Creating Trainings{}", tempTraining);
 
         return trainingRepository.save(tempTraining);
+    }
+
+    @Override
+    public Training updateTraining(Long trainingId, TrainingReqBodyDto trainingsDto){
+        Long userId = trainingsDto.userId();
+        Optional<User> optionalUser = userProvider.getUser(userId);
+        User tempUser = optionalUser.orElseThrow(() -> new IllegalArgumentException("User is not existing in DB, action is not permitted!"));
+
+        Optional<Training> optionalTraining = trainingRepository.findById(trainingId);
+
+        if (!optionalTraining.isPresent()){
+            throw new IllegalArgumentException("Training is not existing in DB, action is not permitted!");
+        }
+        Training newTraining = new Training(trainingId, tempUser, trainingsDto.startTime(), trainingsDto.endTime(), trainingsDto.activityType(), trainingsDto.distance(), trainingsDto.averageSpeed());
+        //log.info("Creating Trainings{}", newTraining);
+
+        return trainingRepository.save(newTraining);
     }
 }

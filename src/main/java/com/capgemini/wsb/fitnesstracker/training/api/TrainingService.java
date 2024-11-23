@@ -1,7 +1,6 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
 
-import com.capgemini.wsb.fitnesstracker.user.api.User;
-
 public interface TrainingService {
-    Training createTraining(TrainingDto trainingDto);
+    Training createTraining(TrainingReqBodyDto trainingDto);
+    Training updateTraining(Long trainingId, TrainingReqBodyDto trainingsDto);
 }
