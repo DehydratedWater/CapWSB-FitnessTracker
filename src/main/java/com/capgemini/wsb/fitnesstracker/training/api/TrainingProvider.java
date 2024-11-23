@@ -23,7 +23,32 @@ public interface TrainingProvider {
      * @return An {@link Optional} containing the all users,
      */
     List<Training> findAllTrainings();
+
+    /**
+     * Retrieves all trainings for user based on userId.
+     *
+     * @param userId id of the user whose trainings should be retrieved
+     * @return a list of {@link Training} objects associated with the specified user
+     *              or empty list if no such trainings exist
+     */
     List<Training> getTrainingsForUser(Long userId);
+
+    /**
+     * Retrieves all trainings that were finished after a specific date.
+     *
+     * @param time the {@link LocalDate} representing the date after which
+     *             trainings were finished
+     * @return a list of {@link Training} objects, which were finished after specific date
+     *              or empty list if no such trainings exist
+     */
     List<Training> getFinishedTrainingsAfterTime(LocalDate time);
+
+    /**
+     * Retrieves all trainings with specific activityType.
+     *
+     * @param activityType a {@link String} representing specific type of activity
+     * @return a list of {@link Training} objects that match the specified activity type
+     *              or empty list if no such trainings exist
+     */
     List<Training> getTrainingByActivityType(String activityType);
 }

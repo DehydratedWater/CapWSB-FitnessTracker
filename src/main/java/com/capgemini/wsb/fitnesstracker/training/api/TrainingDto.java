@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * DTO representing a training session with detailed information.
  *
- * @param id            the unique identifier of the training session, nullable (new training sessions do not contain an id, as it is auto-generated)
+ * @param id            the unique identifier of the training session (new training sessions do not contain an id, as it is auto-generated)
  * @param user          the user who performed the training
  * @param startTime     the start time of the training session
  * @param endTime       the end time of the training session

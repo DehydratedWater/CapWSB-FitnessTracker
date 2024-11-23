@@ -30,11 +30,23 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         throw new UnsupportedOperationException("Not finished yet");
     }
 
+    /**
+     * Retrieves all trainings in the system.
+     *
+     * @return a {@link List} of all {@link Training} entities
+     */
     @Override
     public List<Training> findAllTrainings() {
         return trainingRepository.findAll();
     }
 
+    /**
+     * Retrieves trainings of user specified by userID.
+     *
+     * @param userId id of the user whose trainings should be retrieved
+     * @return a {@link List} of all {@link Training} entities associated with specified user
+     *              or empty list if no such trainings exist
+     */
     @Override
     public List<Training> getTrainingsForUser(Long userId) {
         List<Training> trainings = trainingRepository.findAll();
@@ -58,6 +70,14 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainings;
     }
 
+    /**
+     * Retrieves trainings done after specific date
+     *
+     * @param time the {@link LocalDate} representing the date after which
+     *             trainings were finished
+     * @return a {@link List} of all {@link Training} trainings done after specific date
+     *             or empty list if no such trainings exist
+     */
     @Override
     public List<Training> getFinishedTrainingsAfterTime(LocalDate time) {
 
@@ -75,6 +95,13 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainings;
     }
 
+    /**
+     * Retrieves all trainings with specific activityType.
+     *
+     * @param activityType a {@link String} representing specific type of activity
+     * @return a list of {@link Training} objects that match the specified activity type
+     *              or empty list if no such trainings exist
+     */
     @Override
     public List<Training> getTrainingByActivityType(String activityType){
         activityType = activityType.toLowerCase();
@@ -94,6 +121,12 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainings;
     }
 
+    /**
+     * Creates a new {@link Training} entity.
+     *
+     * @param trainingsDto the {@link TrainingReqBodyDto} object to be created
+     * @return the newly created {@link Training} object with assigned ID and persisted state
+     */
     @Override
     public Training createTraining(TrainingReqBodyDto trainingsDto){
         Long userId = trainingsDto.userId();
@@ -106,6 +139,13 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         return trainingRepository.save(tempTraining);
     }
 
+    /**
+     * Updates an existing {@link Training} entity with new values.
+     *
+     * @param trainingId the identifier of the training to be changed
+     * @param trainingsDto the {@link TrainingReqBodyDto} object containing updated data
+     * @return the updated {@link Training} object after persistence
+     */
     @Override
     public Training updateTraining(Long trainingId, TrainingReqBodyDto trainingsDto){
         Long userId = trainingsDto.userId();
