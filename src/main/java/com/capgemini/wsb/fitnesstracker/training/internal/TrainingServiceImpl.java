@@ -129,11 +129,11 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
      */
     @Override
     public Training createTraining(TrainingReqBodyDto trainingsDto){
-        Long userId = trainingsDto.userId();
+        Long userId = trainingsDto.getUserId();
         Optional<User> optionalUser = userProvider.getUser(userId);
         User tempUser = optionalUser.orElseThrow(() -> new IllegalArgumentException("User is not existing in DB, action is not permitted!"));
 
-        Training tempTraining = new Training(tempUser, trainingsDto.startTime(), trainingsDto.endTime(), trainingsDto.activityType(), trainingsDto.distance(), trainingsDto.averageSpeed());
+        Training tempTraining = new Training(tempUser, trainingsDto.getStartTime(), trainingsDto.getEndTime(), trainingsDto.getActivityType(), trainingsDto.getDistance(), trainingsDto.getAverageSpeed());
         //log.info("Creating Trainings{}", tempTraining);
 
         return trainingRepository.save(tempTraining);
@@ -148,7 +148,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
      */
     @Override
     public Training updateTraining(Long trainingId, TrainingReqBodyDto trainingsDto){
-        Long userId = trainingsDto.userId();
+        Long userId = trainingsDto.getUserId();
         Optional<User> optionalUser = userProvider.getUser(userId);
         User tempUser = optionalUser.orElseThrow(() -> new IllegalArgumentException("User is not existing in DB, action is not permitted!"));
 
@@ -157,7 +157,7 @@ public class TrainingServiceImpl implements TrainingProvider, TrainingService {
         if (!optionalTraining.isPresent()){
             throw new IllegalArgumentException("Training is not existing in DB, action is not permitted!");
         }
-        Training newTraining = new Training(trainingId, tempUser, trainingsDto.startTime(), trainingsDto.endTime(), trainingsDto.activityType(), trainingsDto.distance(), trainingsDto.averageSpeed());
+        Training newTraining = new Training(trainingId, tempUser, trainingsDto.getStartTime(), trainingsDto.getEndTime(), trainingsDto.getActivityType(), trainingsDto.getDistance(), trainingsDto.getAverageSpeed());
         //log.info("Creating Trainings{}", newTraining);
 
         return trainingRepository.save(newTraining);
